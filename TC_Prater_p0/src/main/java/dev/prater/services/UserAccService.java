@@ -1,5 +1,6 @@
 package dev.prater.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.prater.models.UserAccount;
@@ -12,25 +13,33 @@ public class UserAccService {
 	{	
 		UserAccount uA = uDAO.getUserAccount(username);
 		
-		if (uA.getPasskey().equals(passkey)) {
-			return uA;
-		}
-		return null;
+		if (uA.getPasskey().equals(passkey)) {return uA;}
+		else {return null;}
 	}
 	
-//	public UserAccount updatePasskey(int id, String passkey) {
-//		// check if that user exists
-//		return uDAO.updateUserPassword(id, passkey);
-//	}
-		
 	// register / create user
 	public UserAccount createUserAcount(UserAccount uA) {
 		UserAccount createdUser = uDAO.createUserAcc(uA);
 		return createdUser;
 	}
 
-	public List<UserAccount> getAllUsers() {
-		return uDAO.getAllUserAccounts();
+	public List<UserAccount> getAllUsers() 
+	{
+		List<UserAccount> userList = uDAO.getAllUserAccounts();
+		List<UserAccount> output = new ArrayList<>();
+		UserAccount temp = new UserAccount();
+		
+		if (userList == null) {return null;}
+		else {
+			for (UserAccount ua: userList) 
+			{
+				temp = ua;
+				temp.setPassword("omitted for security reasons");
+				output.add(temp);
+				temp = null;
+			}
+			return output;
+		}
 	}
 
 	public UserAccount getUserAccount(int id) throws Exception {
@@ -45,12 +54,13 @@ public class UserAccService {
 		return uA;
 	}
 
-//	public void deleteUserAccount(int id) {
-//		uDAO.deleteUserAccount(id);
-//	}
-	
-//	public void updateUserAccount(UserAccount uChanged) {
-//		uDAO.updateUserAccount(uChanged);
-//	}
+	public boolean updateUserAccount(UserAccount uChanged) {
+		boolean victory = false;
+		UserAccount uBack = uDAO.updateUserAccount(uChanged);
+		if (uBack.getUserID() == uChanged.getUserID()) {victory = true;}
+		return victory;
+	}
 
+	public boolean deleteUserAccount(int id) {return uDAO.deleteUserAccount(id);}
+	
 }

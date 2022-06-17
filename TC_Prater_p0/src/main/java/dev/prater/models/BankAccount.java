@@ -2,31 +2,31 @@ package dev.prater.models;
 
 public class BankAccount {
 	int accountNumber;
-	int amount; //measured in US cents
-	int userID;
-	double interest;
+	int userID; //measured in US cents
+	int amount;
+	String type;
 	
-	BankAccount(int uID) {this(uID,0);}
+	public BankAccount() {;}
 	
-	BankAccount(int uID, int amount)
+	public BankAccount(int aN, int uID, int amount, String type)
 	{
-		this.accountNumber = 0;
-		this.interest = 0;
+		this.accountNumber = aN;
 		this.userID = uID;
 		this.amount = amount;
+		this.type = type;
 	}
 	
-	int getAccountNumber() {return this.accountNumber;}
-	int getAmount() {return this.amount;}
-	int getUserID() {return this.userID;}
-	double getInterest() {return this.interest;}
+	public int getAccountNumber() {return this.accountNumber;}
+	public int getAmount() {return this.amount;}
+	public int getUserID() {return this.userID;}
+	public String getType() {return this.type;}
 	
-	void setAccountNumber(int aN) {this.accountNumber=aN;}
-	void setAmount(int a) {this.amount=a;}
-	void setInterest(double i) {this.interest=i;}
+	public void setAccountNumber(int aN) {this.accountNumber=aN;}
+	public void setAmount(int a) {this.amount=a;}
+	public void setType(String t) {this.type=t;}
 	
-	String transferTo(int a, int aN) {return transferTo(a,aN,this.userID);}
-	String transferTo(int a, int aN, int uID) 
+	public String transferTo(int a, int aN) {return transferTo(a,aN,this.userID);}
+	public String transferTo(int a, int aN, int uID) 
 	{
 		String output = "";
 		return output;

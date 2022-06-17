@@ -30,5 +30,6 @@ public class UserAccount {
 	public void setPassword(String passkey) {this.passkey = passkey;}
 
 	@Override
-	public String toString() {return "User [id: "+userID+", personal name: "+persName+", family name: "+famName+", username: "+username+"]";}
+	public String toString() {return "User [id: "+userID+", personal name: "+persName+
+			", family name: "+famName+", username: "+username+", passkey: "+passkey+"]";}
 }

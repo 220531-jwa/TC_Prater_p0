@@ -16,7 +16,7 @@ public class UserAccountDAO {//CRUD: Create Read Update Destroy for each DAO han
 	//Create
 	public UserAccount createUserAcc(UserAccount uA)
 	{
-		String sql = "insert into users values (default, ?,?,?,?) returning *";
+		String sql = "insert into useraccounts values (default, ?,?,?,?) returning *";
 		try(Connection conn = cu.getConnection();)
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -107,7 +107,7 @@ public class UserAccountDAO {//CRUD: Create Read Update Destroy for each DAO han
 				int id = rs.getInt("id"); 
 				String persName = rs.getString("pers_name");
 				String famName = rs.getString("fam_name");
-				//String username = rs.getString("username"); //already have this one
+				//String username = rs.getString("username"); //already have this one in inputs
 				String passkey = rs.getString("passkey");
 				
 				uA = new UserAccount(id,persName,famName,username,passkey);
@@ -120,8 +120,42 @@ public class UserAccountDAO {//CRUD: Create Read Update Destroy for each DAO han
 	}
 	
 	//Update
-	//WIP
+	public UserAccount updateUserAccount (UserAccount uInput)
+	{
+		String sql = "update useraccounts set pers_name = ?, fam_name = ?, username = ?, passkey = ? where id = ? returning *";
+		try(Connection conn = cu.getConnection();)
+		{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, uInput.getPersName());
+			ps.setString(2, uInput.getFamName());
+			ps.setString(3, uInput.getUsername());
+			ps.setString(4, uInput.getPasskey());
+			ps.setInt(5, uInput.getUserID());
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {return new UserAccount(rs.getInt("id"),rs.getString("pers_name"),rs.getString("fam_name"),
+					rs.getString("username"),rs.getString("passkey"));}
+		}
+		catch(SQLException e) {e.printStackTrace();}
+		return null;
+	}
 	
 	//Destroy
-	//public void deleteUserAccount(int uID) {MockDB.users.remove(uID);} //DANGER: CAUSES ORPHANED BANK ACCOUNTS
+	public boolean deleteUserAccount(int uID) 
+	{
+		if (getUserAccount(uID)==null) {return false;}
+		else {
+			String sql = "delete from useraccounts where id = ? returning *";
+			try(Connection conn = cu.getConnection();)
+			{
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setInt(1, uID);
+				ps.executeQuery();
+			    return true;
+			}
+			catch(SQLException e) {e.printStackTrace();}
+		return false;
+		}
+	}
 }
